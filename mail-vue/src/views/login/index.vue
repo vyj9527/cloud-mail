@@ -17,26 +17,26 @@
           <el-input :class="settingStore.settings.loginDomain === 0 ? 'email-input' : ''" v-model="form.email"
                     type="text" :placeholder="$t('emailAccount')" autocomplete="off">
             <template #append v-if="settingStore.settings.loginDomain === 0">
-              <div @click.stop="openSelect">
-                <el-select
-                    v-if="show === 'login'"
-                    ref="mySelect"
-                    v-model="suffix"
-                    :placeholder="$t('select')"
-                    class="select"
-                >
-                  <el-option
-                      v-for="item in domainList"
-                      :key="item"
-                      :label="item"
-                      :value="item"
-                  />
-                </el-select>
-                <div style="color: var(--el-text-color-primary)">
-                  <span>{{ suffix }}</span>
-                  <Icon class="setting-icon" icon="mingcute:down-small-fill" width="20" height="20"/>
-                </div>
-              </div>
+             <div @click.stop="openSelect">
+               <el-select
+                   v-if="show === 'login'"
+                   ref="mySelect"
+                   v-model="suffix"
+                   :placeholder="$t('select')"
+                   class="select"
+               >
+                 <el-option
+                     v-for="item in domainList"
+                     :key="item"
+                     :label="item"
+                     :value="item"
+                 />
+               </el-select>
+               <div class="suffix-display" style="color: var(--el-text-color-primary)">
+                 <span class="suffix-text">{{ suffix }}</span>
+                 <Icon class="setting-icon" icon="mingcute:down-small-fill" width="20" height="20"/>
+               </div>
+             </div>
             </template>
           </el-input>
           <el-input v-model="form.password" :placeholder="$t('password')" type="password" autocomplete="off">
@@ -49,26 +49,26 @@
           <el-input class="email-input" v-model="registerForm.email" type="text" :placeholder="$t('emailAccount')"
                     autocomplete="off">
             <template #append>
-              <div @click.stop="openSelect">
-                <el-select
-                    v-if="show !== 'login'"
-                    ref="mySelect"
-                    v-model="suffix"
-                    :placeholder="$t('select')"
-                    class="select"
-                >
-                  <el-option
-                      v-for="item in domainList"
-                      :key="item"
-                      :label="item"
-                      :value="item"
-                  />
-                </el-select>
-                <div>
-                  <span>{{ suffix }}</span>
-                  <Icon class="setting-icon" icon="mingcute:down-small-fill" width="20" height="20"/>
-                </div>
-              </div>
+             <div @click.stop="openSelect">
+               <el-select
+                   v-if="show !== 'login'"
+                   ref="mySelect"
+                   v-model="suffix"
+                   :placeholder="$t('select')"
+                   class="select"
+               >
+                 <el-option
+                     v-for="item in domainList"
+                     :key="item"
+                     :label="item"
+                     :value="item"
+                 />
+               </el-select>
+               <div class="suffix-display">
+                 <span class="suffix-text">{{ suffix }}</span>
+                 <Icon class="setting-icon" icon="mingcute:down-small-fill" width="20" height="20"/>
+               </div>
+             </div>
             </template>
           </el-input>
           <el-input v-model="registerForm.password" :placeholder="$t('password')" type="password" autocomplete="off"/>
@@ -483,6 +483,10 @@ function submitRegister() {
 
 :deep(.el-select-dropdown__item) {
   padding: 0 10px;
+  max-width: 240px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .setting-icon {
@@ -505,9 +509,23 @@ function submitRegister() {
 .select {
   position: absolute;
   right: 30px;
-  width: 100px;
+  width: 120px;
   opacity: 0;
   pointer-events: none;
+}
+
+.suffix-display {
+  max-width: 140px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.suffix-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 120px;
 }
 
 .custom-style {

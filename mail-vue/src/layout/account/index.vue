@@ -2,6 +2,7 @@
   <div class="account-box">
     <div class="head-opt">
       <Icon v-perm="'account:add'" class="icon add" icon="ion:add-outline" width="23" height="23" @click="add"/>
+      <Icon v-perm="'account:add'" class="icon" style="margin-left: 8px" icon="mdi:dice-5-outline" width="20" height="20" @click="randomAdd"/>
       <Icon class="icon refresh" icon="ion:reload" width="18" height="18" @click="refresh"/>
     </div>
     <el-scrollbar class="scrollbar" ref="scrollbarRef">
@@ -92,8 +93,8 @@
                     :value="item"
                 />
               </el-select>
-              <div>
-                <span>{{ addForm.suffix }}</span>
+              <div class="suffix-display">
+                <span class="suffix-text">{{ addForm.suffix }}</span>
                 <Icon class="setting-icon" icon="mingcute:down-small-fill" width="20" height="20"/>
               </div>
             </div>
@@ -307,6 +308,23 @@ function add() {
   setTimeout(() => {
     addRef.value.focus()
   }, 100)
+}
+
+function randomString(length = 10) {
+  const chars = 'abcdefghijklmnopqrstuvwxyz0123456789'
+  let result = ''
+  for (let i = 0; i < length; i++) {
+    result += chars[Math.floor(Math.random() * chars.length)]
+  }
+  return result
+}
+
+function randomAdd() {
+  showAdd.value = true
+  nextTick(() => {
+    addForm.email = randomString(10)
+    addRef.value.focus()
+  })
 }
 
 async function copyAccount(account) {
@@ -583,14 +601,35 @@ path[fill="#ffdda1"] {
 .select {
   position: absolute;
   right: 30px;
-  width: 100px;
+  width: 120px;
   opacity: 0;
   pointer-events: none;
+}
+
+.suffix-display {
+  max-width: 140px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.suffix-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 120px;
 }
 
 :deep(.el-pagination .el-select) {
   width: 100px;
   background: var(--el-bg-color);
+}
+
+:deep(.el-select-dropdown__item) {
+  max-width: 240px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .add-email-turnstile {

@@ -3,9 +3,13 @@
     <div>
       <div class="title" >
         <Icon icon="mdi:email-outline" width="24" height="24" />
-        <div>{{settingStore.settings.title}}</div>
+        <div v-if="!uiStore.asideCollapse">{{settingStore.settings.title}}</div>
+        <div class="collapse-toggle" @click="uiStore.asideCollapse = !uiStore.asideCollapse">
+          <Icon v-if="!uiStore.asideCollapse" icon="material-symbols:chevron-left-rounded" width="18" height="18" />
+          <Icon v-else icon="material-symbols:chevron-right-rounded" width="18" height="18" />
+        </div>
       </div>
-      <el-menu :collapse="false" text-color="#fff" active-text-color="#fff" style="margin-top: 10px">
+      <el-menu :collapse="uiStore.asideCollapse" text-color="#fff" active-text-color="#fff" :style="`margin-top: 10px;width: ${uiStore.asideCollapse ? 64 : 260}px`">
         <el-menu-item @click="router.push({name: 'email'})" index="email"
                       :class="route.meta.name === 'email' ? 'choose-item' : ''">
           <Icon icon="hugeicons:mailbox-01" width="20" height="20" />
@@ -31,7 +35,7 @@
           <Icon icon="fluent:settings-48-regular" width="20" height="20" />
           <span class="menu-name" style="margin-left: 21px">{{$t('settings')}}</span>
         </el-menu-item>
-        <div class="manage-title" v-perm="['all-email:query','user:query','role:query','setting:query','analysis:query','reg-key:query']">
+        <div class="manage-title" v-if="!uiStore.asideCollapse" v-perm="['all-email:query','user:query','role:query','setting:query','analysis:query','reg-key:query']">
           <div>{{$t('manage')}}</div>
         </div>
         <el-menu-item @click="router.push({name: 'analysis'})" index="analysis" v-perm="'analysis:query'"
@@ -74,9 +78,11 @@ import router from "@/router/index.js";
 import { useRoute } from "vue-router";
 import {Icon} from "@iconify/vue";
 import {useSettingStore} from "@/store/setting.js";
+import {useUiStore} from "@/store/ui.js";
 
 const settingStore = useSettingStore();
 const route = useRoute();
+const uiStore = useUiStore();
 
 </script>
 
@@ -107,6 +113,12 @@ const route = useRoute();
     font-size: 12px;
     right: 8px;
     color: #ffffff;
+  }
+
+  .collapse-toggle {
+    position: absolute;
+    right: 8px;
+    cursor: pointer;
   }
 
 }
@@ -156,7 +168,6 @@ const route = useRoute();
 
 .el-menu {
   border-right: 0;
-  width: 260px;
 }
 
 :deep(.el-divider__text) {

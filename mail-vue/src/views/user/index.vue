@@ -224,8 +224,8 @@
                     :value="item"
                 />
               </el-select>
-              <div>
-                <span>{{ addForm.suffix }}</span>
+              <div class="suffix-display">
+                <span class="suffix-text">{{ addForm.suffix }}</span>
                 <Icon class="setting-icon" icon="mingcute:down-small-fill" width="20" height="20"/>
               </div>
             </div>
@@ -1044,9 +1044,30 @@ function adjustWidth() {
 .select {
   position: absolute;
   right: 30px;
-  width: 100px;
+  width: 120px;
   opacity: 0;
   pointer-events: none;
+}
+
+.suffix-display {
+  max-width: 140px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.suffix-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 120px;
+}
+
+:deep(.el-select-dropdown__item) {
+  max-width: 240px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .loading {

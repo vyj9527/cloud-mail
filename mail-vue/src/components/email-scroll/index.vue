@@ -45,30 +45,30 @@
                 <div class="email-sender" :style=" showStatus ? 'gap: 10px;' : ''">
                   <div class="email-status" v-if="showStatus">
                     <el-tooltip v-if="item.status ===  0" effect="dark" :content="$t('received')">
-                      <Icon icon="ic:round-mark-email-read" style="color: #51C76B" width="20" height="20"/>
+                      <Icon tabindex="-1" icon="ic:round-mark-email-read" style="color: #51C76B" width="20" height="20"/>
                       />
                     </el-tooltip>
                     <el-tooltip v-if="item.status ===  1" effect="dark" :content="$t('sent')">
-                      <Icon icon="bi:send-arrow-up-fill" style="color: #51C76B" width="20" height="20"/>
+                      <Icon tabindex="-1" icon="bi:send-arrow-up-fill" style="color: #51C76B" width="20" height="20"/>
                     </el-tooltip>
                     <el-tooltip v-if="item.status ===  2" effect="dark" :content="$t('delivered')">
-                      <Icon icon="bi:send-check-fill" style="color: #51C76B" width="20" height="20"/>
+                      <Icon tabindex="-1" icon="bi:send-check-fill" style="color: #51C76B" width="20" height="20"/>
                     </el-tooltip>
                     <el-tooltip v-if="item.status ===  3" effect="dark" :content="$t('bounced')">
-                      <Icon icon="bi:send-x-fill" style="color: #F56C6C" width="20" height="20"/>
+                      <Icon tabindex="-1" icon="bi:send-x-fill" style="color: #F56C6C" width="20" height="20"/>
                     </el-tooltip>
                     <el-tooltip v-if="item.status ===  4" effect="dark" :content="$t('complained')">
-                      <Icon icon="bi:send-exclamation-fill" style="color:#FBBD08" width="20" height="20"/>
+                      <Icon tabindex="-1" icon="bi:send-exclamation-fill" style="color:#FBBD08" width="20" height="20"/>
                     </el-tooltip>
                     <el-tooltip v-if="item.status ===  5" effect="dark" :content="$t('delayed')">
-                      <Icon icon="bi:send-arrow-up-fill" style="color:#FBBD08" width="20" height="20"/>
+                      <Icon tabindex="-1" icon="bi:send-arrow-up-fill" style="color:#FBBD08" width="20" height="20"/>
                     </el-tooltip>
                     <el-tooltip v-if="item.status ===  7" effect="dark" :content="$t('noRecipient')">
-                      <Icon icon="ic:round-mark-email-read" style="color:#FBBD08" width="20" height="20"/>
+                      <Icon tabindex="-1" icon="ic:round-mark-email-read" style="color:#FBBD08" width="20" height="20"/>
                     </el-tooltip>
                     <div class="del-status" v-if="item.isDel">
                       <el-tooltip effect="dark" :content="$t('selectDeleted')">
-                        <Icon class="icon" icon="mdi:email-remove" width="20" height="20"/>
+                        <Icon tabindex="-1" class="icon" icon="mdi:email-remove" width="20" height="20"/>
                       </el-tooltip>
                     </div>
                   </div>
@@ -509,7 +509,16 @@ function getEmailList(refresh = false) {
       emailList.length = 0
     }
 
-    latestEmail.value = data.latestEmail
+    if (!data || !data.list) {
+      firstLoad.value = false
+      noLoading.value = true
+      followLoading.value = false
+      total.value = 0
+      queryParam.emailId = 0
+      return
+    }
+
+    latestEmail.value = data.latestEmail || null
     emailList.push(...list);
 
     if (refresh) scrollbarRef.value?.setScrollTop(0);
@@ -517,7 +526,7 @@ function getEmailList(refresh = false) {
     noLoading.value = data.list.length < queryParam.size;
     followLoading.value = data.list.length >= queryParam.size;
 
-    total.value = data.total;
+    total.value = data.total || 0;
     queryParam.emailId = data.list.length > 0 ? data.list.at(-1).emailId : 0
   }).finally(() => {
     loading.value = false
