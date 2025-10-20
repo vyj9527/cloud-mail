@@ -73,6 +73,23 @@
 - **File Storage**: [Cloudflare R2](https://developers.cloudflare.com/r2/)
 
 
+## Project Structure
+
+- Root
+  - mail-vue: Frontend web app (Vue 3 + Vite + Element Plus). Languages: JavaScript, Vue Single-File Components (.vue), CSS/SCSS/LESS. Key dirs: src/ (components, views, router, store, i18n, request/axios, utils, layout), entry main.js, built with Vite, env files .env.*
+  - mail-worker: Backend on Cloudflare Workers (Hono + Drizzle ORM + Cloudflare D1/KV/R2 + Resend). Languages: JavaScript (ES Modules). Key dirs: src/api (routes), src/service (business logic), src/dao (data access), src/entity and src/model (entities/common results), src/hono (app and middleware), src/email (email receive handler), src/security (auth/context), src/utils (utilities); entry src/index.js; configs wrangler*.toml; tests in test/ with Vitest
+  - doc: Documentation and demo assets
+  - .github: CI/deployment workflows
+  - Others: README.md/README-en.md, LICENSE
+
+- Frontend–Backend integration
+  - mail-worker serves both API and static assets. Requests starting with /api/ are routed to Hono, others are served from env.assets (see mail-worker/src/index.js).
+
+- Languages summary
+  - Frontend: JavaScript, Vue SFC (.vue), CSS/LESS/Sass
+  - Backend: JavaScript (Cloudflare Workers ESM), SQL (Cloudflare D1 queries)
+
+
 ## Support
 
 

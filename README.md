@@ -82,6 +82,23 @@
 - **文件存储**：[Cloudflare R2](https://developers.cloudflare.com/r2/)
 
 
+## 项目结构
+
+- 根目录
+  - mail-vue：前端 Web 应用（Vue 3 + Vite + Element Plus）。主要语言：JavaScript、Vue 单文件组件（.vue）、CSS/SCSS/LESS。核心目录：src/（components、views、router、store、i18n、request/axios、utils、layout），入口 main.js，构建工具 Vite，环境文件 .env.*
+  - mail-worker：后端 Cloudflare Workers（Hono + Drizzle ORM + Cloudflare D1/KV/R2 + Resend）。主要语言：JavaScript（ES Modules）。核心目录：src/api（路由）、src/service（业务逻辑）、src/dao（数据访问）、src/entity 与 src/model（实体与通用返回）、src/hono（应用与中间件）、src/email（邮件接收处理）、src/security（鉴权上下文）、src/utils（工具）；入口 src/index.js；配置 wrangler*.toml；测试 test/ 使用 Vitest
+  - doc：项目文档与演示图片
+  - .github：CI/部署相关工作流
+  - 其他：README.md/README-en.md、LICENSE 等
+
+- 前后端协作
+  - mail-worker 既提供 API 也托管前端静态资源。请求路径以 /api/ 开头的会被转发到 Hono 路由，其余由 env.assets 提供静态文件（见 mail-worker/src/index.js）。
+
+- 前后端所用语言
+  - 前端：JavaScript、Vue 单文件组件（.vue）、CSS/LESS/Sass
+  - 后端：JavaScript（Cloudflare Workers ESM）、SQL（Cloudflare D1 语句）
+
+
 ## 赞助
 
 
@@ -98,7 +115,7 @@
 
 ## 许可证
 
-本项目采用 [MIT](LICENSE) 许可证	
+本项目采用 [MIT](LICENSE) 许可证    
 
 
 ## 交流
